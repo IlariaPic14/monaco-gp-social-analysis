@@ -1,0 +1,16 @@
+instaloader
+langdetect
+matplotlib
+nltk
+numpy
+pandas
+praw
+scikit-learn
+scipy
+selenium
+spacy
+torch
+tqdm
+transformers
+youtube_comment_downloader
+youtube_search_python
