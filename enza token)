@@ -1,0 +1,425 @@
+[1mdiff --git a/requirements.txt b/requirements.txt[m
+[1mindex e69de29..a2c56ae 100644[m
+Binary files a/requirements.txt and b/requirements.txt differ
+[1mdiff --git a/src/sentiment/pipeline_colab_generative_model.ipynb b/src/sentiment/pipeline_colab_generative_model.ipynb[m
+[1mindex 1030963..9d82e8d 100644[m
+[1m--- a/src/sentiment/pipeline_colab_generative_model.ipynb[m
+[1m+++ b/src/sentiment/pipeline_colab_generative_model.ipynb[m
+[36m@@ -1,4631 +1,3800 @@[m
+ {[m
+[31m-  "nbformat": 4,[m
+[31m-  "nbformat_minor": 0,[m
+[31m-  "metadata": {[m
+[32m+[m[32m "cells": [[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": null,[m
+[32m+[m[32m   "metadata": {[m
+     "colab": {[m
+[31m-      "provenance": [],[m
+[31m-      "gpuType": "T4"[m
+[32m+[m[32m     "base_uri": "https://localhost:8080/"[m
+     },[m
+[31m-    "kernelspec": {[m
+[31m-      "name": "python3",[m
+[31m-      "display_name": "Python 3"[m
+[32m+[m[32m    "id": "n783BnV96D1Q",[m
+[32m+[m[32m    "outputId": "869a644d-db13-4cb8-9069-9a56914e7159"[m
+[32m+[m[32m   },[m
+[32m+[m[32m   "outputs": [],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "!pip install transformers accelerate bitsandbytes --quiet\n"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": null,[m
+[32m+[m[32m   "metadata": {[m
+[32m+[m[32m    "id": "w-y6MBYJ-peA"[m
+[32m+[m[32m   },[m
+[32m+[m[32m   "outputs": [],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "from huggingface_hub import login\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "# Inserisci il tuo token tra virgolette\n",[m
+[32m+[m[32m    "login(\"YOUR-SECRET-TOKEN\")\n"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": null,[m
+[32m+[m[32m   "metadata": {[m
+[32m+[m[32m    "colab": {[m
+[32m+[m[32m     "base_uri": "https://localhost:8080/",[m
+[32m+[m[32m     "height": 466,[m
+[32m+[m[32m     "referenced_widgets": [[m
+[32m+[m[32m      "0a53293cf8d641cc8703717d9c21792a",[m
+[32m+[m[32m      "0e6e9a62d83d466baa8939dacfd8b104",[m
+[32m+[m[32m      "06f759d81bd3484eb34e5023a52afd9b",[m
+[32m+[m[32m      "a86a72a270d041f39766bd943d61deb0",[m
+[32m+[m[32m      "23d3343a5b6e45b2a50f3a04204e960a",[m
+[32m+[m[32m      "6a54d704114c413c9f9bfc6bf491b86d",[m
+[32m+[m[32m      "b16c0c4a8e9e4f8b91c9bcc8e0d09177",[m
+[32m+[m[32m      "20e9df1229d04468a1ed34c48eaa9782",[m
+[32m+[m[32m      "5d904169948945c6b3449bb1f4842b85",[m
+[32m+[m[32m      "ca4236f56ba84c5eaaded9da90c45b7d",[m
+[32m+[m[32m      "13681d2ec96946d5b6f89b3cc1c4d3b8",[m
+[32m+[m[32m      "14d95a101614462182aa785b3d49c015",[m
+[32m+[m[32m      "ace246f283134ad3918e0fc326ee6aa8",[m
+[32m+[m[32m      "f5d1147982694deea8b3bbd0c0665500",[m
+[32m+[m[32m      "1f37552e78a54d68b23516daaf1bda1e",[m
+[32m+[m[32m      "5ce91c71ceb44a7695a57405cb6ed087",[m
+[32m+[m[32m      "984c140ed79b4d2db87fcb9beb66ebd6",[m
+[32m+[m[32m      "5931d2c934ac4517b9095b2295103c4b",[m
+[32m+[m[32m      "d57aea7b31ad46fd86603850d2dd03f1",[m
+[32m+[m[32m      "dc34f1cdf157497ca5a1a2276f523bc5",[m
+[32m+[m[32m      "07a08af459d049faa36529a5173dbac6",[m
+[32m+[m[32m      "6100ad71ebad49ff96754752e60d4266",[m
+[32m+[m[32m      "462b4753dbca4610810039fe659372ca",[m
+[32m+[m[32m      "071537da1d9149bd85cf13561fd6178d",[m
+[32m+[m[32m      "578fd37987d94f21bbf5209f488dd6f5",[m
+[32m+[m[32m      "19efd2c77de647dd86df133b93808a75",[m
+[32m+[m[32m      "254ad5c545f0444ca53f5c4f66051bfd",[m
+[32m+[m[32m      "b5886e1171f94adf8344670cdda1e753",[m
+[32m+[m[32m      "694d28bfd8d84261868d08e174bc5b4d",[m
+[32m+[m[32m      "425574aef6c743288e0eae54776e1be5",[m
+[32m+[m[32m      "a9e746a76c794270a0313fa13aa9f1aa",[m
+[32m+[m[32m      "b6038cafc3df4a4d8afdb77922e1a1c4",[m
+[32m+[m[32m      "83b2cd1f36f943cf876d041b059f1b82",[m
+[32m+[m[32m      "5affd5f77ee5476aa4d66b502fa9b774",[m
+[32m+[m[32m      "d6bfd5adf86b4898af92772dff881d46",[m
+[32m+[m[32m      "fac6cb677d4746a0aecd986dd1fb46e9",[m
+[32m+[m[32m      "e3e13b48934c4fdf9c1ea59a11daa1c8",[m
+[32m+[m[32m      "084674623d2e4b3ebe78febdab21563e",[m
+[32m+[m[32m      "66d0009bf0074198b8beb48593abaf5a",[m
+[32m+[m[32m      "8b66ae85fc0f4ea79e09a21b8d337616",[m
+[32m+[m[32m      "121ffd9db305406abf01ae4ab40e199c",[m
+[32m+[m[32m      "e8ca446b0f684527aad8c52b94914890",[m
+[32m+[m[32m      "ed6311720b734a9c8e91c14bac20ccf5",[m
+[32m+[m[32m      "420f016347c0471db6e7a02155b52057",[m
+[32m+[m[32m      "67e331913b61428ebb8c92e0bb87c9a8",[m
+[32m+[m[32m      "3ae1a5eafe2a4375b4165f57011767e2",[m
+[32m+[m[32m      "b15380695b6844d6914a017e9cd5d58a",[m
+[32m+[m[32m      "14315ef8e74442ceab77592eeb9555a8",[m
+[32m+[m[32m      "f26fb104b4964ad085e121685e4aa707",[m
+[32m+[m[32m      "e35c9409bcf8493eb4a8b9fe5e68bfbd",[m
+[32m+[m[32m      "b396409cc3e44b3a9cf6c0bfc8a8e161",[m
+[32m+[m[32m      "6f3f5bc1468a4f8499d11515eb8e4ec4",[m
+[32m+[m[32m      "07ccb669069a4d5d93e0ebb8b0ee86f3",[m
+[32m+[m[32m      "86fe1a6478aa41aba2d37e894036a502",[m
+[32m+[m[32m      "e5cd566429f642aeb03a87ed15fb7b61",[m
+[32m+[m[32m      "2cc66e1805624645ae30365b3def3fb9",[m
+[32m+[m[32m      "21515710fd1a41699de3d2ab7a7e73b9",[m
+[32m+[m[32m      "13fc1a232aeb46b9a3f8e33188410c94",[m
+[32m+[m[32m      "f650dac1c3b44a3385fc4f44112f2633",[m
+[32m+[m[32m      "ce68e1347c9a4efeab8038d5eb8c2a49",[m
+[32m+[m[32m      "be611adb6b754b21b470d0c8cb384793",[m
+[32m+[m[32m      "a4f3883b2c9445f593d7a362147073ef",[m
+[32m+[m[32m      "84d7f49ef9544f59b0258aa9a360a78c",[m
+[32m+[m[32m      "05d7071784c14e0ab5bb8ed7f907c51c",[m
+[32m+[m[32m      "abb40db4cbb04e13b82668c24648ba63",[m
+[32m+[m[32m      "7cd8208657794d3f90ea827d6e8ae6b6",[m
+[32m+[m[32m      "bf70de2a4fc444de8d3b5e48e4b6aaee",[m
+[32m+[m[32m      "b7596211d20f4b70a9dacdfc3da5eb70",[m
+[32m+[m[32m      "6fd11f3751774284a3c65ef15e530d6a",[m
+[32m+[m[32m      "53fab0a4b11f4965836330fee8742d83",[m
+[32m+[m[32m      "55d9fd0bf1934d798f31ee2921f3501b",[m
+[32m+[m[32m      "cef6e35e2c4c442888578a6af22b35f3",[m
+[32m+[m[32m      "4bf16b92177b4846ba556ce6a4c7e0f8",[m
+[32m+[m[32m      "12a19c870d084e16a23857393a047b84",[m
+[32m+[m[32m      "90a63cc73f7d4515a4de319860088798",[m
+[32m+[m[32m      "0b45f75d93f944e3acf8e84df072b37f",[m
+[32m+[m[32m      "108a1fdb57174d49bfdb28fa2e6019b5",[m
+[32m+[m[32m      "b925bb59ae3c482da8b9b632e4dc6cf9",[m
+[32m+[m[32m      "e52c1d3fdc5c4da384e62270c8e977ec",[m
+[32m+[m[32m      "e4df2d001f4d4fbfa2c5f7ad249b0da1",[m
+[32m+[m[32m      "e6c363e97a414d36801303ff74076502",[m
+[32m+[m[32m      "85093bc739e44c8aada7f53944a361ec",[m
+[32m+[m[32m      "b3411edb7c5e40dd84966be7dc204942",[m
+[32m+[m[32m      "b91874dd02394ec9a90a8c5df5bed740",[m
+[32m+[m[32m      "4d925d022cb34e718b4781376838cd3d",[m
+[32m+[m[32m      "7c41613ac43e4fb494db45db24a13084",[m
+[32m+[m[32m      "27db91328cc244b3b80367b699d5be31",[m
+[32m+[m[32m      "6a0a134b9d7e43fca17cb7c8965c5d75",[m
+[32m+[m[32m      "70015f96cc5b4c9f9788e87733712277",[m
+[32m+[m[32m      "00046ad1f67442b8932aefb6072ade62",[m
+[32m+[m[32m      "c0e0f05eba6a4cb88160b605605a969e",[m
+[32m+[m[32m      "3c43a2b9c4da4c6fb474bb42ac4c0e92",[m
+[32m+[m[32m      "0c6268cbac4c4912a732e1c913bd67be",[m
+[32m+[m[32m      "32191a724cfb46a8b8892654510bca3e",[m
+[32m+[m[32m      "9a78155ad78a4303a87be2442b7c2763",[m
+[32m+[m[32m      "04c7175c67b147608a52ac09e7ffde95",[m
+[32m+[m[32m      "f12b374bb157403b80cfbabf567e1dfc",[m
+[32m+[m[32m      "950d9a2d88bf46bcbef58392e7bf094d",[m
+[32m+[m[32m      "b35c4e0308344596a1ff343ab4be9572",[m
+[32m+[m[32m      "d9d0fdff8df24ca8871274ed4a570588",[m
+[32m+[m[32m      "953f996ac1604668ba54853bfc6f7a47",[m
+[32m+[m[32m      "d26b68437634499181b84b53aa12d47d",[m
+[32m+[m[32m      "5b0f91fdb6b247c380c3267553ccd192",[m
+[32m+[m[32m      "ad2c2cf4d2854100a65bb4f0fa3a40b5",[m
+[32m+[m[32m      "c8ac6463864c4c2889498294557edc90",[m
+[32m+[m[32m      "e8e7b4684367432da52a5c4e769892eb",[m
+[32m+[m[32m      "e72e07ce4daa4e02ba34e1fe80a1c839",[m
+[32m+[m[32m      "dd3b97bfade1416b99590ba0c4e9281e",[m
+[32m+[m[32m      "648a6f8d65394f5f8b2464b03d67dfe4",[m
+[32m+[m[32m      "43b82f89d32843bd9bf958d71ad0b3a7"[m
+[32m+[m[32m     ][m
+     },[m
+[31m-    "language_info": {[m
+[31m-      "name": "python"[m
+[32m+[m[32m    "id": "dSsukIO06LRe",[m
+[32m+[m[32m    "outputId": "b6dc746f-f0af-40bb-ab3b-c9dd76101c60"[m
+[32m+[m[32m   },[m
+[32m+[m[32m   "outputs": [],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "model_id = \"tiiuae/falcon-7b-instruct\"\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "tokenizer = AutoTokenizer.from_pretrained(model_id)\n",[m
+[32m+[m[32m    "model = AutoModelForCausalLM.from_pretrained(model_id, device_map=\"auto\", torch_dtype=\"auto\")\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "\n"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": null,[m
+[32m+[m[32m   "metadata": {[m
+[32m+[m[32m    "colab": {[m
+[32m+[m[32m     "base_uri": "https://localhost:8080/"[m
+     },[m
+[31m-    "accelerator": "GPU",[m
+[31m-    "widgets": {[m
+[31m-      "application/vnd.jupyter.widget-state+json": {[m
+[31m-        "0a53293cf8d641cc8703717d9c21792a": {[m
+[31m-          "model_module": "@jupyter-widgets/controls",[m
+[31m-          "model_name": "HBoxModel",[m
+[31m-          "model_module_version": "1.5.0",[m
+[31m-          "state": {[m
+[31m-            "_dom_classes": [],[m
+[31m-            "_model_module": "@jupyter-widgets/controls",[m
+[31m-            "_model_module_version": "1.5.0",[m
+[31m-            "_model_name": "HBoxModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/controls",[m
+[31m-            "_view_module_version": "1.5.0",[m
+[31m-            "_view_name": "HBoxView",[m
+[31m-            "box_style": "",[m
+[31m-            "children": [[m
+[31m-              "IPY_MODEL_0e6e9a62d83d466baa8939dacfd8b104",[m
+[31m-              "IPY_MODEL_06f759d81bd3484eb34e5023a52afd9b",[m
+[31m-              "IPY_MODEL_a86a72a270d041f39766bd943d61deb0"[m
+[31m-            ],[m
+[31m-            "layout": "IPY_MODEL_23d3343a5b6e45b2a50f3a04204e960a"[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "0e6e9a62d83d466baa8939dacfd8b104": {[m
+[31m-          "model_module": "@jupyter-widgets/controls",[m
+[31m-          "model_name": "HTMLModel",[m
+[31m-          "model_module_version": "1.5.0",[m
+[31m-          "state": {[m
+[31m-            "_dom_classes": [],[m
+[31m-            "_model_module": "@jupyter-widgets/controls",[m
+[31m-            "_model_module_version": "1.5.0",[m
+[31m-            "_model_name": "HTMLModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/controls",[m
+[31m-            "_view_module_version": "1.5.0",[m
+[31m-            "_view_name": "HTMLView",[m
+[31m-            "description": "",[m
+[31m-            "description_tooltip": null,[m
+[31m-            "layout": "IPY_MODEL_6a54d704114c413c9f9bfc6bf491b86d",[m
+[31m-            "placeholder": "​",[m
+[31m-            "style": "IPY_MODEL_b16c0c4a8e9e4f8b91c9bcc8e0d09177",[m
+[31m-            "value": "tokenizer_config.json: 100%"[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "06f759d81bd3484eb34e5023a52afd9b": {[m
+[31m-          "model_module": "@jupyter-widgets/controls",[m
+[31m-          "model_name": "FloatProgressModel",[m
+[31m-          "model_module_version": "1.5.0",[m
+[31m-          "state": {[m
+[31m-            "_dom_classes": [],[m
+[31m-            "_model_module": "@jupyter-widgets/controls",[m
+[31m-            "_model_module_version": "1.5.0",[m
+[31m-            "_model_name": "FloatProgressModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/controls",[m
+[31m-            "_view_module_version": "1.5.0",[m
+[31m-            "_view_name": "ProgressView",[m
+[31m-            "bar_style": "success",[m
+[31m-            "description": "",[m
+[31m-            "description_tooltip": null,[m
+[31m-            "layout": "IPY_MODEL_20e9df1229d04468a1ed34c48eaa9782",[m
+[31m-            "max": 1132,[m
+[31m-            "min": 0,[m
+[31m-            "orientation": "horizontal",[m
+[31m-            "style": "IPY_MODEL_5d904169948945c6b3449bb1f4842b85",[m
+[31m-            "value": 1132[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "a86a72a270d041f39766bd943d61deb0": {[m
+[31m-          "model_module": "@jupyter-widgets/controls",[m
+[31m-          "model_name": "HTMLModel",[m
+[31m-          "model_module_version": "1.5.0",[m
+[31m-          "state": {[m
+[31m-            "_dom_classes": [],[m
+[31m-            "_model_module": "@jupyter-widgets/controls",[m
+[31m-            "_model_module_version": "1.5.0",[m
+[31m-            "_model_name": "HTMLModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/controls",[m
+[31m-            "_view_module_version": "1.5.0",[m
+[31m-            "_view_name": "HTMLView",[m
+[31m-            "description": "",[m
+[31m-            "description_tooltip": null,[m
+[31m-            "layout": "IPY_MODEL_ca4236f56ba84c5eaaded9da90c45b7d",[m
+[31m-            "placeholder": "​",[m
+[31m-            "style": "IPY_MODEL_13681d2ec96946d5b6f89b3cc1c4d3b8",[m
+[31m-            "value": " 1.13k/1.13k [00:00&lt;00:00, 81.3kB/s]"[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "23d3343a5b6e45b2a50f3a04204e960a": {[m
+[31m-          "model_module": "@jupyter-widgets/base",[m
+[31m-          "model_name": "LayoutModel",[m
+[31m-          "model_module_version": "1.2.0",[m
+[31m-          "state": {[m
+[31m-            "_model_module": "@jupyter-widgets/base",[m
+[31m-            "_model_module_version": "1.2.0",[m
+[31m-            "_model_name": "LayoutModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/base",[m
+[31m-            "_view_module_version": "1.2.0",[m
+[31m-            "_view_name": "LayoutView",[m
+[31m-            "align_content": null,[m
+[31m-            "align_items": null,[m
+[31m-            "align_self": null,[m
+[31m-            "border": null,[m
+[31m-            "bottom": null,[m
+[31m-            "display": null,[m
+[31m-            "flex": null,[m
+[31m-            "flex_flow": null,[m
+[31m-            "grid_area": null,[m
+[31m-            "grid_auto_columns": null,[m
+[31m-            "grid_auto_flow": null,[m
+[31m-            "grid_auto_rows": null,[m
+[31m-            "grid_column": null,[m
+[31m-            "grid_gap": null,[m
+[31m-            "grid_row": null,[m
+[31m-            "grid_template_areas": null,[m
+[31m-            "grid_template_columns": null,[m
+[31m-            "grid_template_rows": null,[m
+[31m-            "height": null,[m
+[31m-            "justify_content": null,[m
+[31m-            "justify_items": null,[m
+[31m-            "left": null,[m
+[31m-            "margin": null,[m
+[31m-            "max_height": null,[m
+[31m-            "max_width": null,[m
+[31m-            "min_height": null,[m
+[31m-            "min_width": null,[m
+[31m-            "object_fit": null,[m
+[31m-            "object_position": null,[m
+[31m-            "order": null,[m
+[31m-            "overflow": null,[m
+[31m-            "overflow_x": null,[m
+[31m-            "overflow_y": null,[m
+[31m-            "padding": null,[m
+[31m-            "right": null,[m
+[31m-            "top": null,[m
+[31m-            "visibility": null,[m
+[31m-            "width": null[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "6a54d704114c413c9f9bfc6bf491b86d": {[m
+[31m-          "model_module": "@jupyter-widgets/base",[m
+[31m-          "model_name": "LayoutModel",[m
+[31m-          "model_module_version": "1.2.0",[m
+[31m-          "state": {[m
+[31m-            "_model_module": "@jupyter-widgets/base",[m
+[31m-            "_model_module_version": "1.2.0",[m
+[31m-            "_model_name": "LayoutModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/base",[m
+[31m-            "_view_module_version": "1.2.0",[m
+[31m-            "_view_name": "LayoutView",[m
+[31m-            "align_content": null,[m
+[31m-            "align_items": null,[m
+[31m-            "align_self": null,[m
+[31m-            "border": null,[m
+[31m-            "bottom": null,[m
+[31m-            "display": null,[m
+[31m-            "flex": null,[m
+[31m-            "flex_flow": null,[m
+[31m-            "grid_area": null,[m
+[31m-            "grid_auto_columns": null,[m
+[31m-            "grid_auto_flow": null,[m
+[31m-            "grid_auto_rows": null,[m
+[31m-            "grid_column": null,[m
+[31m-            "grid_gap": null,[m
+[31m-            "grid_row": null,[m
+[31m-            "grid_template_areas": null,[m
+[31m-            "grid_template_columns": null,[m
+[31m-            "grid_template_rows": null,[m
+[31m-            "height": null,[m
+[31m-            "justify_content": null,[m
+[31m-            "justify_items": null,[m
+[31m-            "left": null,[m
+[31m-            "margin": null,[m
+[31m-            "max_height": null,[m
+[31m-            "max_width": null,[m
+[31m-            "min_height": null,[m
+[31m-            "min_width": null,[m
+[31m-            "object_fit": null,[m
+[31m-            "object_position": null,[m
+[31m-            "order": null,[m
+[31m-            "overflow": null,[m
+[31m-            "overflow_x": null,[m
+[31m-            "overflow_y": null,[m
+[31m-            "padding": null,[m
+[31m-            "right": null,[m
+[31m-            "top": null,[m
+[31m-            "visibility": null,[m
+[31m-            "width": null[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "b16c0c4a8e9e4f8b91c9bcc8e0d09177": {[m
+[31m-          "model_module": "@jupyter-widgets/controls",[m
+[31m-          "model_name": "DescriptionStyleModel",[m
+[31m-          "model_module_version": "1.5.0",[m
+[31m-          "state": {[m
+[31m-            "_model_module": "@jupyter-widgets/controls",[m
+[31m-            "_model_module_version": "1.5.0",[m
+[31m-            "_model_name": "DescriptionStyleModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/base",[m
+[31m-            "_view_module_version": "1.2.0",[m
+[31m-            "_view_name": "StyleView",[m
+[31m-            "description_width": ""[m
+[31m-          }[m
+[31m-        },[m
+[31m-        "20e9df1229d04468a1ed34c48eaa9782": {[m
+[31m-          "model_module": "@jupyter-widgets/base",[m
+[31m-          "model_name": "LayoutModel",[m
+[31m-          "model_module_version": "1.2.0",[m
+[31m-          "state": {[m
+[31m-            "_model_module": "@jupyter-widgets/base",[m
+[31m-            "_model_module_version": "1.2.0",[m
+[31m-            "_model_name": "LayoutModel",[m
+[31m-            "_view_count": null,[m
+[31m-            "_view_module": "@jupyter-widgets/base",[m
+[31m-            "_view_module_version": "1.2.0",[m
+[31m-            "_view_name": "LayoutView",[m
+[31m-            "align_content": null,[m
+[31m-            "align_items": null,[m
+[31m-            "align_self": null,[m
+[31m-            "border": null,[m
+[31m-            "bottom": null,[m
+[31m-            "display": null,[m
+[31m-            "flex": null,[m
+[31m-            "flex_flow": null,[m
+[31m-            "grid_area": null,[m
+[31m-            "grid_auto_columns": null,[m
+[31m-            "grid_auto_flow":
