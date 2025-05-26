@@ -8,7 +8,7 @@ nlp = spacy.load("en_core_web_sm")
 
 # === CONFIG ===
 INPUT_CSV = "data/f1_social_sentiment_roberta.csv"  
-OUTPUT_JSON = "reports/cluster_entity_likes.json"
+OUTPUT_JSON = "data/cluster_entity_likes.json"
 
 # === Carica il dataset ===
 df = pd.read_csv(INPUT_CSV)
