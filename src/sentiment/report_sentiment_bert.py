@@ -15,7 +15,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 
 INPUT_FILE = os.path.join('data', 'f1_social_sentiment_multilingua_finale.csv')
-REPORTS_DIR = 'reports'
+REPORTS_DIR = 'report'
 
 def assicurati_cartella(cartella):
     if not os.path.exists(cartella):
