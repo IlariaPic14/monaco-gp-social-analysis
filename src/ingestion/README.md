@@ -17,6 +17,7 @@ Estrae commenti da video pubblici di YouTube relativi al GP di Monaco, utilizzan
 - `youtube_ingestion.py` (in `src/ingestion`)
 - `youtube_search.py` (in `src/utils`)
 
+
 ### Come funziona
 1. Esegue una ricerca video su YouTube (default: `"Monaco GP 2025"`).
 2. Estrae i primi 50 video con `youtube-search-python`.
@@ -28,6 +29,7 @@ Estrae commenti da video pubblici di YouTube relativi al GP di Monaco, utilizzan
 ```bash
 python src/ingestion/youtube_ingestion.py
 
+--- 
 
 ## Reddit – `reddit_praw_ingestion.py`
 
@@ -38,9 +40,9 @@ Estrae commenti da post pubblici del subreddit `r/formula1` in base a una query 
 - [`praw`](https://pypi.org/project/praw/)
 
 ### File coinvolti
-- `reddit_praw_ingestion.py` (in `src/ingestion`)
-- `config.py` (in `src/utils`)
-- `reddit_login.py` (in `src/utils` – facoltativo, per generare manualmente il refresh token)
+- `src/ingestion/reddit_praw_ingestion.py`
+- `src/utils/config.py`
+- `src/utils/reddit_login.py` (facoltativo, per generare manualmente il refresh token)
 
 ### Come funziona
 1. Cerca i post su Reddit con la query `"Monaco GP 2025"` nel subreddit `r/formula1`.
@@ -52,14 +54,21 @@ Estrae commenti da post pubblici del subreddit `r/formula1` in base a una query 
 ```bash
 python src/ingestion/reddit_praw_ingestion.py
 
-## 📸 Instagram – `instagram_profiles_scraper.py`
+---
+
+##  Instagram – `instagram_profiles_scraper.py`
 
 ### Descrizione
 Estrae i **post pubblici** da un elenco di profili Instagram ufficiali (es. `@f1`, `@scuderiaferrari`, ecc.) tramite la libreria `instaloader`, utilizzando un file di cookie precedentemente salvato per bypassare il login interattivo. I post vengono formattati secondo lo schema del dataset e salvati in formato JSON.
 
+
+---
+
 ### Dipendenze
 - [`instaloader`](https://pypi.org/project/instaloader/)
 - [`selenium`](https://pypi.org/project/selenium/) (per la generazione dei cookie)
+
+---
 
 ### File coinvolti
 - `instagram_profiles_scraper.py` (in `src/ingestion`)
@@ -81,8 +90,9 @@ Estrae i **post pubblici** da un elenco di profili Instagram ufficiali (es. `@f1
 ```bash
 python src/ingestion/instagram_profiles_scraper.py
 
+---
 
-## 🖱️ Instagram (GUI) – `interactive_gui_comment_scraper.py`
+## Instagram (GUI) – `interactive_gui_comment_scraper.py`
 
 ### Descrizione
 Questo script consente di **estrarre manualmente i commenti da post Instagram** visitati tramite browser. Dopo aver caricato i cookie utente per accedere a Instagram, l’interfaccia GUI ti permette di:
@@ -120,6 +130,8 @@ Questo script consente di **estrarre manualmente i commenti da post Instagram** 
 ```bash
 python src/ingestion/interactive_gui_comment_scraper.py
 
+---
+
 ##  TikTok – Ingestion via strumenti esterni (Make.com + Actor)
 
 ### Descrizione
@@ -142,7 +154,7 @@ A differenza delle altre piattaforme, l’ingestion dei dati da TikTok **non è 
    - L’esportazione in CSV
 
 3. **Conversione finale**  
-   I dati in Google Sheets sono stati esportati in un file CSV conforme allo schema del progetto e salvati in:
+   I dati in Google Sheets sono stati esportati in un file CSV conforme allo schema del progetto e salvati
 
 
 
