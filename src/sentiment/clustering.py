@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 if __name__ == "__main__":
     INPUT_PATH = "data/f1_social_clean.csv"
     OUTPUT_CSV = "data/f1_social_labeled.csv"
-    OUTPUT_LABELS = "reports/cluster_descriptions.json"
+    OUTPUT_LABELS = "data/cluster_descriptions.json"
 
     # 1. Carica il dataset
     df = pd.read_csv(INPUT_PATH)
