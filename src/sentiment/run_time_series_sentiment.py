@@ -6,7 +6,7 @@ from src.sentiment.time_series_sentiment import (
 
 if __name__ == "__main__":
     input_path = "data/f1_social_sentiment_roberta.csv"
-    output_json = "reports/theme_daily_sentiment.json"
+    output_json = "data/theme_daily_sentiment.json"
 
     sentiment_df = generate_theme_daily_sentiment(input_path, output_json)
     plot_sentiment_trend(sentiment_df)
