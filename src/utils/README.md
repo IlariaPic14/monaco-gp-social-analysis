@@ -1,4 +1,4 @@
-# 🔧 Utils Section
+#  Utils Section
 
 Questa cartella raccoglie moduli di supporto utilizzati nei processi di scraping, autenticazione, elaborazione linguistica e clustering dei commenti.  
 Ogni modulo è pensato per essere **riutilizzabile** e **modulare**, e viene importato da altri script nelle cartelle `ingestion/` e  `sentiment/` 
@@ -33,7 +33,7 @@ Se Reddit blocca le richieste per limiti di autenticazione o sessioni scadute, p
 
 ---
 
-## 🔎 YouTube Search – `youtube_search.py`
+##  YouTube Search – `youtube_search.py`
 
 ### Descrizione
 Questo modulo fornisce una funzione per cercare video su YouTube tramite API non ufficiali.  
